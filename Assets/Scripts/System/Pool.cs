@@ -17,7 +17,6 @@ public class Pool<T> : IEnumerable where T: MonoBehaviour
     {
         _objectPrefab = objectPrefab;
         _container = null;
-      
         CreatePool(count);
     }
 

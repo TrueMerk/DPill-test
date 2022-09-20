@@ -1,31 +1,60 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Object = System.Object;
 
-public class ServiceLocator : SingleTone<ServiceLocator>
+public class ServiceLocator : MonoBehaviour
 {
-    private IDictionary<Type, MonoBehaviour> _serviceReferences;
+    private IDictionary<Type, Object> _serviceReferences;
 
+    public static ServiceLocator Instance { get; private set; } = null;
     protected void Awake()
     {
-        SingletonBuilder(this);
-        _serviceReferences = new Dictionary<Type, MonoBehaviour>();
+        if (Instance == null) 
+        { 
+            Instance = this; 
+        } 
+        else if(Instance == this)
+        { 
+            Destroy(gameObject); 
+        }
+        _serviceReferences = new Dictionary<Type, Object>();
+        DontDestroyOnLoad(gameObject);
+    }
+    
+    public T GetService<T>() where T : class 
+    {
+        if (!_serviceReferences.ContainsKey(typeof(T)))
+        {
+            throw new ArgumentException();
+        }
+        else
+        {
+            return _serviceReferences[typeof(T)] as T;
+        }
     }
 
-    public T GetService<T>() where T : MonoBehaviour, new()
+    public void RegisterService<T>(T value) where T : class
     {
-        UnityEngine.Assertions.Assert.IsNotNull(_serviceReferences,"Someone has requested a service prior to the locator`s initialization");
-
-        var serviceLocated = _serviceReferences.ContainsKey(typeof(T));
-        if (!serviceLocated)
+        if (_serviceReferences.ContainsKey(typeof(T)))
         {
-            _serviceReferences.Add( typeof(T),FindObjectOfType<T>());
+            throw new ArgumentException();
         }
-        
-        UnityEngine.Assertions.Assert.IsTrue(_serviceReferences.ContainsKey(typeof(T)),"Could not find service");
-        var service = (T) _serviceReferences[typeof(T)];
-        UnityEngine.Assertions.Assert.IsNotNull( service,typeof(T).ToString()+ " could not be found.");
-        return service;
+        else
+        {
+            _serviceReferences.Add(typeof(T),value);
+        }
+    }
+
+    public void DeregisterService<T>()
+    {
+        if (!_serviceReferences.ContainsKey(typeof(T)))
+        {
+            throw new ArgumentException();
+        }
+        else
+        {
+            _serviceReferences.Remove(typeof(T));
+        }
     }
 }
