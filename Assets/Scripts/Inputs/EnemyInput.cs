@@ -15,27 +15,32 @@ public class EnemyInput : InputComponent
     
     public override Vector3 GetMovementDirection()
     {
-        var difference = _player.transform.position - transform.position;
-        if (difference.magnitude <= _attackDistance || _player.IsOnBase || _player.IsDead)
+        if (Difference().magnitude <= _attackDistance || _player.IsOnBase || _player.IsDead)
         {
             return Vector3.zero;
         }
-        return difference;
+        return Difference();
     }
 
     public override Quaternion GetRotation()
     {
-        var playerPosition = _player.transform.position;
-        var difference = playerPosition - transform.position;
-        var rotateZ = Math.Atan2(difference.x, difference.z) * Mathf.Rad2Deg;
-        var target = Quaternion.Euler(0f, ((float) (rotateZ)), 0f);
-        return target;
+        var target = Quaternion.identity;
+        if (Difference().magnitude>1)
+        {
+            var rotateZ = Math.Atan2(Difference().x, Difference().z) * Mathf.Rad2Deg;
+            target = Quaternion.Euler(0f,(float) rotateZ,0f);
+        }
+        return Quaternion.Lerp(transform.rotation, target, Time.deltaTime * 100);
     }
 
     public override bool IsAttacking()
     {
+        return Difference().magnitude <= _attackDistance;
+    }
+
+    private Vector3 Difference()
+    {
         var playerPosition = _player.transform.position;
-        var difference = playerPosition - transform.position;
-        return difference.magnitude <= _attackDistance;
+        return playerPosition - transform.position;
     }
 }

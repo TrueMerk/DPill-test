@@ -23,6 +23,7 @@ public class PlayerShooter : AttackComponent
     
     private void Shoot()
     {
+        
         if (_enemyPool.EnemyList.Count != 0)
         {
             var differenceMin = Target();

@@ -18,6 +18,5 @@ public class JoyStickInput : InputComponent
     public override bool IsAttacking()
     {
         return !gameObject.GetComponent<Player>().IsOnBase;
-       
     }
 }
