@@ -10,8 +10,11 @@ public class EnemyPool : MonoBehaviour
     [SerializeField] private bool _autoExpand = true;
     [SerializeField] private Health _enemy;
     [SerializeField] private int _spawnRate;
-    public List<Health> EnemyList = new List<Health>();
     private Pool <Health> _pool;
+    private Player _player;
+    
+    public List<Health> EnemyList = new List<Health>();
+    public bool EnemyExist;
 
     private void Awake()
     {
@@ -20,6 +23,7 @@ public class EnemyPool : MonoBehaviour
 
     private void Start()
     {
+        _player = ServiceLocator.Instance.GetService<Player>();
         _pool = new Pool <Health> (_enemy, _poolCount, transform)
         {
             AutoExpand = _autoExpand
@@ -40,13 +44,14 @@ public class EnemyPool : MonoBehaviour
         var enemy = _pool.GetFreeElement();
         enemy.transform.position = rPosition;
         EnemyList.Add(enemy);
+        EnemyExist = true;
     }
     
     private IEnumerator SpawnEnemyCoroutine(float rate)
     {
         while (true)
         {
-            if (EnemyList.Count == 0 )
+            if (EnemyList.Count == 0 && _player.IsOnBase)
             {
                 EnemyList.Clear();
                 for (var i = 0; i < _poolCount; i++)

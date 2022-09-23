@@ -111,7 +111,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rb: {fileID: 5163118080110298817}
-  _movementSpeed: 1
+  _movementSpeed: 0.5
   _rotationSpeed: 100
 --- !u!114 &8157210824044151957
 MonoBehaviour:
@@ -157,7 +157,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _animator: {fileID: 465519217416037990}
   _runningAnimationName: Running
-  _idleAnimationName: Drunk Idle Variation
+  _idleAnimationName: Dynamic Idle
   _attackAnimation: Throw
   _hasAttackAnimation: 1
 --- !u!114 &3240826649680880093
@@ -184,8 +184,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7544bf6f7ef75534c9901d3dc629fc1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 1.02
-  _animation: {fileID: 0}
 --- !u!1001 &465519217416037984
 PrefabInstance:
   m_ObjectHideFlags: 0

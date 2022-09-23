@@ -11,8 +11,9 @@ public class PlayerShooter : AttackComponent
     private bool _isReload;
     private EnemyPool _enemyPool;
     private Player _player;
+    private bool _enemyExist;
 
-    public override bool CanAttack => !_isReload && !_player.IsOnBase;
+    public override bool CanAttack => !_isReload && !_player.IsOnBase && _enemyPool.EnemyExist;
     
     private void Start()
     {
@@ -30,6 +31,10 @@ public class PlayerShooter : AttackComponent
             _shotDir.rotation = Quaternion.Lerp(transform.rotation, target, Time.deltaTime * 100);
             _bullet.CreateBullet(_shotDir);
             StartCoroutine(Reload());
+        }
+        else
+        {
+            _enemyPool.EnemyExist = false;
         }
     }
 

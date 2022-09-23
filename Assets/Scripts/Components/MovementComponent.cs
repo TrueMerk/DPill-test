@@ -3,7 +3,7 @@ using UnityEngine;
 public class MovementComponent : MonoBehaviour
 {
     [SerializeField] private Rigidbody _rb;
-    [SerializeField] private int _movementSpeed = 3;
+    [SerializeField] private float _movementSpeed = 3;
     [SerializeField] private int _rotationSpeed = 100;
     
     public void Move(Vector3 direction)

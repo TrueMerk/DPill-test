@@ -16,6 +16,7 @@ public class CharacterController : MonoBehaviour
         
         var isAttack = _inputComponent.IsAttacking();
         var canAttack = _attackComponent.CanAttack;
+        
         if (direction!=Vector3.zero)
         {
             _animatorComponent.PlayRunningAnimation();
